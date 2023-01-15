@@ -5,17 +5,21 @@ const mongoose = require('mongoose');
 require('./models/Book');
 
 const app = express();
-
-const connectionString = `mongodb+srv://adminprod:${process.env.MONGODB_KEY}@prodcluster.pc2bg.mongodb.net/newdb?retryWrites=true&w=majority`
-mongoose.connect(connectionString);
+const PORT = process.env.PORT || 3000;
 
 const Book = mongoose.model('Book');
+
+const connectionString = `mongodb+srv://adminprod:${process.env.MONGODB_KEY}@prodcluster.pc2bg.mongodb.net/newdb?retryWrites=true&w=majority`;
 
 app.get('/', async (req, res) => {
   const books = await Book.find();
   res.send(`Hello world, ${books.length} books`);
 });
 
-app.listen(3000, () => {
-  console.log('Listening');
-});
+mongoose.connect(connectionString).then(
+  () => {
+    app.listen(PORT, () => {
+      console.log('Listening');
+    });
+  }
+);
