@@ -9,6 +9,8 @@ const PORT = process.env.PORT || 3000;
 
 const connectionString = `mongodb+srv://adminprod:${process.env.MONGODB_KEY}@prodcluster.pc2bg.mongodb.net/newdb?retryWrites=true&w=majority`;
 
+const cors = require('cors');
+app.use(cors({origin: 'http://localhost:5173'}));
 
 mongoose.connect(connectionString).then(
   () => {
