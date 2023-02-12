@@ -5,11 +5,6 @@ const typeDefs = gql`
     books: [Book]
   }
 
-  type TName {
-    en: String
-    ru: String
-  }
-
   type Book {
     id: ID!
     authors: [TName]
@@ -18,6 +13,11 @@ const typeDefs = gql`
     read: Boolean!
     marked: Boolean!
     mainLang: String!
+  }
+
+  type TName {
+    en: String
+    ru: String
   }
 `;
 

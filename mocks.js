@@ -61,23 +61,10 @@ const B4 = {
 
 const mocks = {
   Query: () => ({
-    books: [B1, B2, B3, B4],
+    // books: [B1, B2, B3, B4],
+    books: [...new Array(4)],
   }),
-  // Book: () => ({
-  //   id: () => 'just an id',
-  //   authors: () => [{
-  //     ru: 'Джеймс Скотт',
-  //     en: 'James Scott',
-  //   }],
-  //   title: () => ({
-  //     ru: 'Глазами государства',
-  //     en: 'Seeing like a state',
-  //   }),
-  //   mainLang: () => 'en',
-  //   refsNumber: () => 2,
-  //   read: () => true,
-  //   marked: () => true,
-  // }),
+  Book: () => B1,
 };
 
 module.exports = mocks;
