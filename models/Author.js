@@ -10,12 +10,6 @@ const NameSchema = new Schema({
 });
 
 const AuthorSchema = new Schema({
-  _id: {
-    type: String,
-    required: true,
-    default: () => uuid(),
-    index: { unique: true },
-  },
   name: NameSchema,
   mainLang: String,
 }, { _id: false });

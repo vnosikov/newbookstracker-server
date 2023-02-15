@@ -7,6 +7,7 @@ require('./models/Author');
 require('./models/Book');
 require('dotenv').config(); 
 
+mongoose.set('strictQuery', false);
 
 const typeDefs = require('./schema');
 const resolvers = require('./resolvers');

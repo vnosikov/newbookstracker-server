@@ -8,14 +8,19 @@ const resolvers = {
   Query: {
     books: async () => {
       const books = await Book.find();
-      const updatedBooks = await Promise.all(books.map(async(b, i) => {
-        const decodedAuthors = await Promise.all(b.authorsIds.map(async authorId => {
-          const result = await Author.findOne({_id: authorId });
-          return {
-            ru: result.name.ru ?? null,
-            en: result.name.en ?? null,
-          };
-        }));
+      const authorsIds = books.flatMap((b) => b.authorsIds);
+      const authors = await Author.find({ _id: { $in: authorsIds } }).lean();
+    
+      const authorsMap = {};
+      authors.forEach((author) => {
+        authorsMap[author._id.toString()] = {
+          ru: author.name.ru ?? null,
+          en: author.name.en ?? null,
+        };
+      });
+    
+      const updatedBooks = books.map((b, i) => {
+        const decodedAuthors = b.authorsIds.map((authorId) => authorsMap[authorId.toString()]);
         const refsNumber = getReverseRefs(books, b._id).length;
         return {
           id: b._id,
@@ -26,9 +31,10 @@ const resolvers = {
           marked: b.marked,
           mainLang: b.mainLang,
         };
-      }));
+      });
+    
       return updatedBooks.sort((a, b) => b.refsNumber - a.refsNumber);
-    },
+    }
   }
 };
 
