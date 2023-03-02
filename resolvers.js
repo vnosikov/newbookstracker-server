@@ -57,15 +57,30 @@ const resolvers = {
     },
 
     register: async (_, { username, password }) => {
-      console.log('regrg')
+      if (username === '') {
+        return {
+          code: 400,
+          success: false,
+          message: 'Username not specified',
+        }
+      }
       const existingUser = await User.exists({ username });
-      console.log('of course');
 
       if(existingUser) {
         return {
           code: 409,
           success: false,
           message: 'User already exists',
+        };
+      }
+
+      // I don't care for security as it is a pet-project who will be used by nobody except me
+      // so I don't expect much from a password
+      if (password.length <6) {
+        return {
+          code: 400,
+          success: false,
+          message: 'Password needs to have at least six symbols',
         };
       }
 
