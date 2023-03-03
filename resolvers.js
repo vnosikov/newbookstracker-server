@@ -7,6 +7,8 @@ const User = mongoose.model('User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+require('dotenv').config(); 
+
 
 const resolvers = {
   Query: {
@@ -45,15 +47,31 @@ const resolvers = {
     login: async (_, { username, password }) => {
       const user = await User.findOne({ username });
       if (!user) {
-        throw new Error('Убивать, убивать, убивать!');
+        return {
+          code: 404,
+          success: false,
+          message: 'User doesn\'t exist',
+        }
       }
-
+      
+      console.log('1');
       const correctPassword = await bcrypt.compare(password, user.password);
       if(!correctPassword){
-        throw new Error('Incorrect password');
+        return {
+          code: 401,
+          success: false,
+          message: 'Wrong password'
+        }
       }
-
+      
+      console.log('2');
       const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
+      console.log('3');
+      return {
+        code: 200,
+        success: true,
+        message: token,
+      };
     },
 
     register: async (_, { username, password }) => {
