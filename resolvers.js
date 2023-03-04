@@ -12,7 +12,9 @@ require('dotenv').config();
 
 const resolvers = {
   Query: {
-    books: async () => {
+    books: async (parent, args, context) => {
+      console.log('Shared context?', context);
+
       const books = await Book.find();
       const authorsIds = books.flatMap((b) => b.authorsIds);
       const authors = await Author.find({ _id: { $in: authorsIds } }).lean();
@@ -54,7 +56,6 @@ const resolvers = {
         }
       }
       
-      console.log('1');
       const correctPassword = await bcrypt.compare(password, user.password);
       if(!correctPassword){
         return {
@@ -64,9 +65,7 @@ const resolvers = {
         }
       }
       
-      console.log('2');
-      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
-      console.log('3');
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
       return {
         code: 200,
         success: true,
