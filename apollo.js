@@ -7,6 +7,7 @@ const util = require('util');
 
 const mongoose = require('mongoose');
 mongoose.set('strictQuery', false);
+const ObjectId = mongoose.Types.ObjectId;
 
 require('dotenv').config(); 
 require('./models/Author');
@@ -35,10 +36,10 @@ const context = async ({ req }) => {
   try {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decodedToken.id;
-    const user = await User.findById(userId);
-    return { user }
+    return { userId }
   } catch (err) {
-    return { user: null };
+    console.log('caught', err);
+    return { userId: null };
   }
 }
 

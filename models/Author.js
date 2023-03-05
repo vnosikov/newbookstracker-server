@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-const uuid = require('uuid');
-
 
 const { Schema } = mongoose;
 
@@ -12,6 +10,7 @@ const NameSchema = new Schema({
 const AuthorSchema = new Schema({
   name: NameSchema,
   mainLang: String,
+  userId: { type: Schema.Types.ObjectId, ref: 'User '},
 }, { _id: false });
 
 mongoose.model('Author', AuthorSchema);

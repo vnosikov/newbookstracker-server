@@ -9,8 +9,7 @@ const TitleSchema = new Schema({
 
 const BookSchema = new Schema({
   _id: Schema.Types.ObjectId,
-  // _user: { type: Schema.Types.ObjectId, ref: 'User '},
-  _user: Schema.Types.Mixed,
+  userId: { type: Schema.Types.ObjectId, ref: 'User '},
   authorsIds: Array,
   mainLang: String,
   marked: Boolean,

@@ -15,7 +15,7 @@ const resolvers = {
     books: async (parent, args, context) => {
       console.log('Shared context?', context);
 
-      const books = await Book.find();
+      const books = await Book.find({ userId: context.userId });
       const authorsIds = books.flatMap((b) => b.authorsIds);
       const authors = await Author.find({ _id: { $in: authorsIds } }).lean();
 
